@@ -1,16 +1,9 @@
-<table>
-  <thead>
-  <tr>
-    <th>Id</th>
-    <th>Name</th>
-    <th>Age</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let user of users">
-    <td>{{user.id}}</td>
+<table class="table table-hover">
+  <tr *ngFor="let user of service.users">
     <td>{{user.name}}</td>
     <td>{{user.age}}</td>
+    <td><span (click)="populateForm(user)" class="fa-stack edit-user"><i class="fa fa-square fa-stack-2x" style="color: #3498db;"></i> <i class="fa fa-pencil fa-stack-1x fa-inverse"></i></span></td>
+    <td><span (click)="deleteRecord(user.id)" class="fa-stack"><i class="fa fa-square fa-stack-2x" style="color: #e74c3c;"></i> <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i></span></td>
   </tr>
-  </tbody>
 </table>
+

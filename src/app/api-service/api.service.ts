@@ -1,21 +1,42 @@
 import {Injectable} from '@angular/core';
 
-import {HttpClient, HttpResponse} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {User} from '../user';
 import {Observable} from 'rxjs';
-
-const localUrl = 'http://localhost:8080/users';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
 
+  readonly rootUrl = 'http://localhost:8080';
+
+  formData: User;
+  users: User[];
+
   constructor(private http: HttpClient) {
   }
 
-  getUsers(): Observable<HttpResponse<User[]>> {
-    return this.http.get<User[]>(
-      localUrl, {observe: 'response'});
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  };
+
+  getUsers() {
+    this.http.get(this.rootUrl + '/users')
+      .toPromise().then(res => this.users = res as User[]);
+  }
+
+  addUser(user: User): Observable<{}> {
+    return this.http.post(this.rootUrl + '/users', JSON.stringify(user), this.httpOptions);
+  }
+
+  editUser(user: User): Observable<{}> {
+    return this.http.put(this.rootUrl + '/users', JSON.stringify(user), this.httpOptions);
+  }
+
+  deleteUser(id: number): Observable<{}> {
+    return this.http.delete(this.rootUrl + '/user/' + id);
   }
 }
