@@ -12,5 +12,4 @@ export class AppComponent {
   }
 
   title = 'front-project';
-
 }

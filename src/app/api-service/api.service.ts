@@ -28,6 +28,11 @@ export class ApiService {
       .toPromise().then(res => this.users = res as User[]);
   }
 
+  getUsersByName(name: string) {
+    this.http.get(this.rootUrl + '/search?Name=' + name)
+      .toPromise().then(res => this.users = res as User[]);
+  }
+
   addUser(user: User): Observable<{}> {
     return this.http.post(this.rootUrl + '/users', JSON.stringify(user), this.httpOptions);
   }

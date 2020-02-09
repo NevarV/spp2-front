@@ -42,14 +42,14 @@ export class UserFormComponent implements OnInit {
   insertRecord(form: NgForm) {
     this.service.addUser(form.value).subscribe(res => {
       this.toastr.success('Inserted successfully', 'Adminka');
-      this.resetForm(form);
+      this.viewService.changeComponent(true);
     });
   }
 
   updateRecord(form: NgForm) {
     this.service.editUser(form.value).subscribe(res => {
       this.toastr.success('Updated successfully', 'Adminka');
-      this.resetForm(form);
+      this.viewService.changeComponent(true);
     });
   }
 }
