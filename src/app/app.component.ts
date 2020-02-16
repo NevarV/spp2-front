@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
-import {ViewService} from './view/view.service';
+import {ViewService} from './content/view/view.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -8,8 +9,8 @@ import {ViewService} from './view/view.service';
 })
 export class AppComponent {
 
-  constructor(private viewService: ViewService) {
-  }
-
   title = 'front-project';
+
+  constructor(private viewService: ViewService, private router: Router) {
+  }
 }

@@ -15,8 +15,11 @@ export class UserFormComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.viewService.tinyComponent = true;
     if (this.viewService.resetForm) {
       this.resetForm();
+    } else {
+      this.viewService.resetForm = true;
     }
   }
 
@@ -42,14 +45,13 @@ export class UserFormComponent implements OnInit {
   insertRecord(form: NgForm) {
     this.service.addUser(form.value).subscribe(res => {
       this.toastr.success('Inserted successfully', 'Adminka');
-      this.viewService.changeComponent(true);
+      this.viewService.showUsers();
     });
   }
 
   updateRecord(form: NgForm) {
     this.service.editUser(form.value).subscribe(res => {
       this.toastr.success('Updated successfully', 'Adminka');
-      this.viewService.changeComponent(true);
     });
   }
 }

@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {ViewService} from '../view/view.service';
 import {NgForm} from '@angular/forms';
 import {ApiService} from '../api-service/api.service';
+import {TokenStorageService} from '../../security/token-storage/token-storage.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -11,21 +13,23 @@ import {ApiService} from '../api-service/api.service';
 export class NavbarComponent implements OnInit {
 
   name: string;
+  username: string;
 
-  constructor(private viewService: ViewService, private apiService: ApiService) {
+  constructor(private viewService: ViewService, private apiService: ApiService, private tokenStorageService: TokenStorageService, private router: Router) {
   }
 
   ngOnInit() {
     this.name = '';
+    this.username = this.tokenStorageService.getUser().username;
   }
 
   showForm() {
     this.viewService.resetForm = true;
-    this.viewService.formVisible = true;
+    this.viewService.tinyComponent = true;
   }
 
   showList() {
-    this.viewService.formVisible = false;
+    this.viewService.tinyComponent = false;
   }
 
   onSubmit(form: NgForm) {

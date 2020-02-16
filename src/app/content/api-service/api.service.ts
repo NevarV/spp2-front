@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 
 import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
-import {User} from '../user';
+import {User} from '../../user';
 import {Observable} from 'rxjs';
 
 @Injectable({
@@ -9,7 +9,7 @@ import {Observable} from 'rxjs';
 })
 export class ApiService {
 
-  readonly rootUrl = 'http://localhost:8080';
+  readonly rootUrl = 'http://localhost:8080/api';
 
   formData: User;
   users: User[];

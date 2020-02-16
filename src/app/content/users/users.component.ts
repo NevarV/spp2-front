@@ -1,7 +1,7 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 import {ApiService} from '../api-service/api.service';
-import {User} from '../user';
+import {User} from '../../user';
 import {ViewService} from '../view/view.service';
 import {ToastrService} from 'ngx-toastr';
 
@@ -16,6 +16,7 @@ export class UsersComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.viewService.tinyComponent = false;
     this.refreshList();
   }
 
@@ -24,8 +25,8 @@ export class UsersComponent implements OnInit {
   }
 
   populateForm(user: User) {
-    this.viewService.changeComponent(false);
     this.service.formData = Object.assign({}, user);
+    this.viewService.showForm();
   }
 
   deleteRecord(id: number) {

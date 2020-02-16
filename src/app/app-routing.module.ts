@@ -1,11 +1,41 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {Routes, RouterModule} from '@angular/router';
+import {UsersComponent} from './content/users/users.component';
+import {LoginComponent} from './security/login/login.component';
+import {RegisterComponent} from './security/register/register.component';
+import {UserFormComponent} from './content/user-form/user-form.component';
+import {AuthGuard} from './security/router-guard/auth.guard';
+import {NotFoundComponent} from './errors/not-found/not-found.component';
+import {HomeLayoutComponent} from './layouts/home-layout/home-layout.component';
+import {LoginLayoutComponent} from './layouts/login-layout/login-layout.component';
 
 
-const routes: Routes = [];
+const routes: Routes = [
+  {
+    path: '',
+    component: HomeLayoutComponent,
+    canActivate: [AuthGuard],
+    children: [
+      {path: '', redirectTo: 'home', pathMatch: 'full'},
+      {path: 'home', component: UsersComponent},
+      {path: 'form', component: UserFormComponent}
+    ]
+  },
+  {
+    path: '',
+    component: LoginLayoutComponent,
+    children: [
+      {path: 'login', component: LoginComponent},
+      {path: 'register', component: RegisterComponent},
+      {path: 'NotFound', component: NotFoundComponent},
+      {path: '**', redirectTo: 'NotFound'}
+    ]
+  }
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}
