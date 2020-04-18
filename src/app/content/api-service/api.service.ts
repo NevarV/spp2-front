@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 
-import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {User} from '../../user';
 import {Observable} from 'rxjs';
 
@@ -9,7 +9,7 @@ import {Observable} from 'rxjs';
 })
 export class ApiService {
 
-  readonly rootUrl = 'http://localhost:8080/api';
+  readonly rootUrl = 'https://nevar-vlad-spp-2.herokuapp.com/api';
 
   formData: User;
   users: User[];
@@ -22,6 +22,10 @@ export class ApiService {
       'Content-Type': 'application/json'
     })
   };
+
+  getUserById(id: string): Observable<User> {
+    return this.http.get<User>(this.rootUrl + '/users/' + id);
+  }
 
   getUsers() {
     this.http.get(this.rootUrl + '/users')

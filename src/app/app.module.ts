@@ -18,6 +18,7 @@ import {AuthGuard} from './security/router-guard/auth.guard';
 import {NotFoundComponent} from './errors/not-found/not-found.component';
 import {HomeLayoutComponent} from './layouts/home-layout/home-layout.component';
 import {LoginLayoutComponent} from './layouts/login-layout/login-layout.component';
+import { UserFormEditComponent } from './content/user-form-edit/user-form-edit.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import {LoginLayoutComponent} from './layouts/login-layout/login-layout.componen
     LoginComponent,
     NotFoundComponent,
     HomeLayoutComponent,
-    LoginLayoutComponent
+    LoginLayoutComponent,
+    UserFormEditComponent
   ],
   imports: [
     BrowserModule,
