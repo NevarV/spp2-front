@@ -3,13 +3,14 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {User} from '../../user';
 import {Observable} from 'rxjs';
+import {environment} from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
 
-  readonly rootUrl = 'https://nevar-vlad-spp-2.herokuapp.com/api';
+  readonly rootUrl = environment.apiUrl;
 
   formData: User;
   users: User[];
