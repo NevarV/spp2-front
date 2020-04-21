@@ -1,0 +1,19 @@
+<form *ngIf="user != null; else elseBlock" #form="ngForm" (submit)="onSubmit(form)" autocomplete="off">
+  <input type="hidden" name="id" #id="ngModel" [(ngModel)]="user.id">
+  <div class="form-group">
+    <label>Name</label>
+    <input name="name" #name="ngModel" [(ngModel)]="user.name" type="text" class="form-control" required>
+    <div class="validation-error" *ngIf="name.invalid && name.touched">This field is required.</div>
+  </div>
+  <div class="form-group">
+    <label>Age</label>
+    <input name="age" #age="ngModel" [(ngModel)]="user.age" type="number" class="form-control" required>
+  </div>
+  <div class="form-group">
+    <button type="submit" [disabled]="form.invalid" class="btn btn-lg btn-block">Edit</button>
+  </div>
+</form>
+<ng-template #elseBlock>
+  User does not exist
+</ng-template>
+

@@ -15,21 +15,12 @@ export class NavbarComponent implements OnInit {
   name: string;
   username: string;
 
-  constructor(private viewService: ViewService, private apiService: ApiService, private tokenStorageService: TokenStorageService, private router: Router) {
+  constructor(private viewService: ViewService, private apiService: ApiService, public tokenStorageService: TokenStorageService, public router: Router) {
   }
 
   ngOnInit() {
     this.name = '';
     this.username = this.tokenStorageService.getUser().username;
-  }
-
-  showForm() {
-    this.viewService.resetForm = true;
-    this.viewService.tinyComponent = true;
-  }
-
-  showList() {
-    this.viewService.tinyComponent = false;
   }
 
   onSubmit(form: NgForm) {

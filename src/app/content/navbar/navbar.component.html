@@ -6,7 +6,7 @@
         <a class="nav-link" [routerLink]="['/home']" [class.active]="router.url === '/home'">Users <span
           class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item" *ngIf="tokenStorageService.canWrite()">
         <a class="nav-link" [routerLink]="['/form']" [class.active]="router.url === '/form'">Add user</a>
       </li>
     </ul>

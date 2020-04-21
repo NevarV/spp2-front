@@ -8,6 +8,7 @@ import {AuthGuard} from './security/router-guard/auth.guard';
 import {NotFoundComponent} from './errors/not-found/not-found.component';
 import {HomeLayoutComponent} from './layouts/home-layout/home-layout.component';
 import {LoginLayoutComponent} from './layouts/login-layout/login-layout.component';
+import {UserFormEditComponent} from './content/user-form-edit/user-form-edit.component';
 
 
 const routes: Routes = [
@@ -18,7 +19,8 @@ const routes: Routes = [
     children: [
       {path: '', redirectTo: 'home', pathMatch: 'full'},
       {path: 'home', component: UsersComponent},
-      {path: 'form', component: UserFormComponent}
+      {path: 'form', component: UserFormComponent},
+      {path: 'users/:id/edit', component: UserFormEditComponent}
     ]
   },
   {

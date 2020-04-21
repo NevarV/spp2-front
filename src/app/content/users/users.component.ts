@@ -4,6 +4,8 @@ import {ApiService} from '../api-service/api.service';
 import {User} from '../../user';
 import {ViewService} from '../view/view.service';
 import {ToastrService} from 'ngx-toastr';
+import {TokenStorageService} from '../../security/token-storage/token-storage.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-users',
@@ -12,11 +14,11 @@ import {ToastrService} from 'ngx-toastr';
 })
 export class UsersComponent implements OnInit {
 
-  constructor(private service: ApiService, private toastr: ToastrService, private viewService: ViewService) {
+  constructor(public service: ApiService, private toastr: ToastrService, private viewService: ViewService, public tokenStorageService: TokenStorageService, private router: Router) {
   }
 
   ngOnInit() {
-    this.viewService.tinyComponent = false;
+    this.viewService.tinyComponent = !this.tokenStorageService.canWrite();
     this.refreshList();
   }
 
@@ -25,8 +27,7 @@ export class UsersComponent implements OnInit {
   }
 
   populateForm(user: User) {
-    this.service.formData = Object.assign({}, user);
-    this.viewService.showForm();
+    this.router.navigate(['/users/' + user.id + '/edit']);
   }
 
   deleteRecord(id: number) {

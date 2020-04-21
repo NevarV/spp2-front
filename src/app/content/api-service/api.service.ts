@@ -1,15 +1,16 @@
 import {Injectable} from '@angular/core';
 
-import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {User} from '../../user';
 import {Observable} from 'rxjs';
+import {environment} from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
 
-  readonly rootUrl = 'http://localhost:8080/api';
+  readonly rootUrl = environment.apiUrl;
 
   formData: User;
   users: User[];
@@ -22,6 +23,10 @@ export class ApiService {
       'Content-Type': 'application/json'
     })
   };
+
+  getUserById(id: string): Observable<User> {
+    return this.http.get<User>(this.rootUrl + '/users/' + id);
+  }
 
   getUsers() {
     this.http.get(this.rootUrl + '/users')

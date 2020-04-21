@@ -11,22 +11,10 @@ import {ViewService} from '../view/view.service';
 })
 export class UserFormComponent implements OnInit {
 
-  constructor(private service: ApiService, private toastr: ToastrService, private viewService: ViewService) {
+  constructor(public service: ApiService, private toastr: ToastrService, private viewService: ViewService) {
   }
 
   ngOnInit() {
-    this.viewService.tinyComponent = true;
-    if (this.viewService.resetForm) {
-      this.resetForm();
-    } else {
-      this.viewService.resetForm = true;
-    }
-  }
-
-  resetForm(form?: NgForm) {
-    if (form != null) {
-      form.resetForm();
-    }
     this.service.formData = {
       id: null,
       name: '',
@@ -35,23 +23,9 @@ export class UserFormComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
-    if (form.value.id == null) {
-      this.insertRecord(form);
-    } else {
-      this.updateRecord(form);
-    }
-  }
-
-  insertRecord(form: NgForm) {
     this.service.addUser(form.value).subscribe(res => {
       this.toastr.success('Inserted successfully', 'Adminka');
       this.viewService.showUsers();
-    });
-  }
-
-  updateRecord(form: NgForm) {
-    this.service.editUser(form.value).subscribe(res => {
-      this.toastr.success('Updated successfully', 'Adminka');
     });
   }
 }
