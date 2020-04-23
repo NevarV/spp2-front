@@ -24,7 +24,7 @@ export class ApiService {
   connect() {
     const accessToken = this.tokenStorageService.getToken();
     if (!this.connected && accessToken) {
-      const socket = new WebSocket('ws://nevar-vlad-spp-2.herokuapp.com/spp-back-project');
+      const socket = new WebSocket('wss://nevar-vlad-spp-2.herokuapp.com/spp-back-project');
       this.ws = Stomp.over(socket);
       const that = this;
       // tslint:disable-next-line:only-arrow-functions
