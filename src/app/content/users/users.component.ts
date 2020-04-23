@@ -14,7 +14,7 @@ import {Router} from '@angular/router';
 })
 export class UsersComponent implements OnInit {
 
-  constructor(private service: ApiService, private toastr: ToastrService, private viewService: ViewService, private tokenStorageService: TokenStorageService, private router: Router) {
+  constructor(public service: ApiService, private toastr: ToastrService, private viewService: ViewService, public tokenStorageService: TokenStorageService, private router: Router) {
   }
 
   ngOnInit() {

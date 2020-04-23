@@ -8,7 +8,7 @@ import {ViewService} from '../../content/view/view.service';
 })
 export class HomeLayoutComponent implements OnInit {
 
-  constructor(private viewService: ViewService) { }
+  constructor(public viewService: ViewService) { }
 
   ngOnInit() {
   }
