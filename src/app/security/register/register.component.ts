@@ -21,17 +21,7 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
-    this.authService.register(this.form).subscribe(
-      data => {
-        console.log(data);
-        this.isSignUpFailed = false;
-        this.toastr.success('Account was created successfully', 'Adminka');
-        this.router.navigate(['/login']);
-      },
-      err => {
-        this.errorMessage = err.error.message;
-        this.isSignUpFailed = true;
-      }
-    );
+    this.authService.register(this.form);
+    this.router.navigate(['/login']);
   }
 }

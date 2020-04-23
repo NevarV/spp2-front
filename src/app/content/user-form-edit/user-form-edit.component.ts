@@ -19,17 +19,13 @@ export class UserFormEditComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.paramMap.subscribe(params => {
-      this.userId = params.get('id');
-      this.service.getUserById(this.userId).subscribe(res => this.user = res);
-    });
+    this.user = null;
+    this.userId = this.route.snapshot.params.id;
+    this.service.getUserById(this.userId, this);
   }
 
   onSubmit(form: NgForm) {
-    this.service.editUser(form.value).subscribe(res => {
-      this.toastr.success('Updated successfully', 'Adminka');
-      this.router.navigate(['/home']);
-    });
+    this.service.editUser(form.value);
   }
 
 }

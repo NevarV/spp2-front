@@ -19,11 +19,6 @@ export class UsersComponent implements OnInit {
 
   ngOnInit() {
     this.viewService.tinyComponent = !this.tokenStorageService.canWrite();
-    this.refreshList();
-  }
-
-  refreshList() {
-    this.service.getUsers();
   }
 
   populateForm(user: User) {
@@ -31,10 +26,7 @@ export class UsersComponent implements OnInit {
   }
 
   deleteRecord(id: number) {
-    this.service.deleteUser(id).subscribe(res => {
-      this.toastr.success('Deleted successfully', 'Adminka');
-      this.refreshList();
-    });
+    this.service.deleteUser(id);
   }
 
 }

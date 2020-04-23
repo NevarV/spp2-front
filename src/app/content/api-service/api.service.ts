@@ -1,51 +1,103 @@
 import {Injectable} from '@angular/core';
-
-import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {User} from '../../user';
-import {Observable} from 'rxjs';
+import {HttpService} from '../http-service/http.service';
+import * as Stomp from 'stompjs';
+import {UserFormEditComponent} from '../user-form-edit/user-form-edit.component';
+import {TokenStorageService} from '../../security/token-storage/token-storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
 
-  readonly rootUrl = 'https://nevar-vlad-spp-2.herokuapp.com/api';
-
   formData: User;
-  users: User[];
+  specifiedData = false;
+  users: User[] = [];
+  ws: any;
+  waiter: UserFormEditComponent;
+  connected = false;
 
-  constructor(private http: HttpClient) {
+  constructor(private httpService: HttpService, private tokenStorageService: TokenStorageService) {
+    this.connect();
   }
 
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json'
-    })
-  };
+  connect() {
+    const accessToken = this.tokenStorageService.getToken();
+    if (!this.connected && accessToken) {
+      const socket = new WebSocket('ws://nevar-vlad-spp-2.herokuapp.com/spp-back-project');
+      this.ws = Stomp.over(socket);
+      const that = this;
+      // tslint:disable-next-line:only-arrow-functions
+      this.ws.connect({'X-Authorization': 'Bearer ' + accessToken}, function(frame) {
+        that.connected = true;
+        // tslint:disable-next-line:only-arrow-functions
+        that.ws.subscribe('/user/queue/errors', function(message) {
+          alert('Error ' + message.body);
+        });
+        // tslint:disable-next-line:only-arrow-functions
+        that.ws.subscribe('/user/queue/users', function(message) {
+          console.log(message);
+          that.users = JSON.parse(message.body);
+        });
+        // tslint:disable-next-line:only-arrow-functions
+        that.ws.subscribe('/topic/users', function(message) {
+          console.log(message);
+          if (!that.specifiedData) {
+            that.users = JSON.parse(message.body);
+          }
+        });
+        // tslint:disable-next-line:only-arrow-functions
+        that.ws.subscribe('/user/queue/users/edit', function(message) {
+          console.log(message);
+          if (that.waiter != null) {
+            that.waiter.user = JSON.parse(message.body);
+            that.waiter = null;
+          }
+        });
+        // tslint:disable-next-line:only-arrow-functions
+      }, function(error) {
+        that.connected = false;
+        alert('STOMP error ' + error);
+      });
+    }
+  }
 
-  getUserById(id: string): Observable<User> {
-    return this.http.get<User>(this.rootUrl + '/users/' + id);
+  getWs() {
+    if (this.connected) {
+      return this.ws;
+    } else {
+      this.connect();
+      return this.ws;
+    }
+  }
+
+  getUserById(id: string, waiter: UserFormEditComponent) {
+    this.getWs().send('/users/' + id);
+    this.waiter = waiter;
   }
 
   getUsers() {
-    this.http.get(this.rootUrl + '/users')
-      .toPromise().then(res => this.users = res as User[]);
+    this.specifiedData = false;
+    this.getWs().send('/users');
   }
 
   getUsersByName(name: string) {
-    this.http.get(this.rootUrl + '/search?Name=' + name)
-      .toPromise().then(res => this.users = res as User[]);
+    this.specifiedData = true;
+    this.getWs().send('/users/filter', {}, name);
   }
 
-  addUser(user: User): Observable<{}> {
-    return this.http.post(this.rootUrl + '/users', JSON.stringify(user), this.httpOptions);
+  addUser(user: User) {
+    const data = JSON.stringify(user);
+    this.getWs().send('/users/new', {}, data);
   }
 
-  editUser(user: User): Observable<{}> {
-    return this.http.put(this.rootUrl + '/users', JSON.stringify(user), this.httpOptions);
+  editUser(user: User) {
+    const data = JSON.stringify(user);
+    this.getWs().send('/users/edit', {}, data);
   }
 
-  deleteUser(id: number): Observable<{}> {
-    return this.http.delete(this.rootUrl + '/user/' + id);
+  deleteUser(id: number) {
+    this.getWs().send('/users/' + id + '/delete');
   }
+
 }
