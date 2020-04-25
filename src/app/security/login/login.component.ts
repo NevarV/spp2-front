@@ -25,28 +25,11 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this.tokenStorage.signOut();
     this.viewService.tinyComponent = true;
+    this.authService.connect();
   }
 
   onSubmit() {
-    this.authService.login(this.form).subscribe(
-      data => {
-        this.tokenStorage.saveToken(data.accessToken);
-        this.tokenStorage.saveUser(data);
-
-        this.isLoginFailed = false;
-        this.isLoggedIn = true;
-        this.roles = this.tokenStorage.getUser().roles;
-        this.router.navigate(['/home']);
-      },
-      err => {
-        this.errorMessage = err.error.message;
-        this.isLoginFailed = true;
-      }
-    );
-  }
-
-  reloadPage() {
-    window.location.reload();
+    this.authService.login(this.form);
   }
 
 }

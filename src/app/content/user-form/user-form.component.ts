@@ -23,9 +23,6 @@ export class UserFormComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
-    this.service.addUser(form.value).subscribe(res => {
-      this.toastr.success('Inserted successfully', 'Adminka');
-      this.viewService.showUsers();
-    });
+    this.service.addUser(form.value);
   }
 }
