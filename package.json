@@ -3,17 +3,20 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "node server.js",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "postinstall": "ng build --output-path angularapp  --aot --prod"
   },
   "private": true,
   "dependencies": {
     "@angular/animations": "~8.2.14",
+    "@angular/cli": "~8.3.23",
     "@angular/common": "~8.2.14",
     "@angular/compiler": "~8.2.14",
+    "@angular/compiler-cli": "~8.2.14",
     "@angular/core": "~8.2.14",
     "@angular/forms": "~8.2.14",
     "@angular/platform-browser": "~8.2.14",
@@ -25,11 +28,14 @@
     "apollo-client": "^2.6.8",
     "graphql": "^14.6.0",
     "graphql-tag": "^2.10.3",
+    "express": "^4.17.1",
     "ngx-toastr": "^11.3.3",
+    "path": "^0.12.7",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1",
-    "apollo-link": "^1.2.11"
+    "apollo-link": "^1.2.11",
+    "typescript": "~3.5.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.23",
@@ -51,5 +57,9 @@
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
     "typescript": "~3.5.3"
+  },
+  "engines": {
+    "node": "v12.14.1",
+    "npm": "6.13.4"
   }
 }

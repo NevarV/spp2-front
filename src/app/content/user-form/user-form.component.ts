@@ -11,7 +11,7 @@ import {ViewService} from '../view/view.service';
 })
 export class UserFormComponent implements OnInit {
 
-  constructor(private service: ApiService, private toastr: ToastrService, private viewService: ViewService) {
+  constructor(public service: ApiService, private toastr: ToastrService, private viewService: ViewService) {
   }
 
   ngOnInit() {
