@@ -1,51 +1,116 @@
 import {Injectable} from '@angular/core';
 
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {User} from '../../user';
 import {Observable} from 'rxjs';
+import {Apollo} from 'apollo-angular';
+import gql from 'graphql-tag';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
 
-  readonly rootUrl = 'https://nevar-vlad-spp-2.herokuapp.com/api';
-
   formData: User;
-  users: User[];
+  users: User[] = [];
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private apollo: Apollo) {
   }
 
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json'
-    })
-  };
-
-  getUserById(id: string): Observable<User> {
-    return this.http.get<User>(this.rootUrl + '/users/' + id);
+  getUserById(id: string): Observable<any> {
+    return this.apollo
+      .query<any>({
+        query: gql`
+        query($id: Int) {
+          getUserById(id: $id) {
+            id
+            name
+            age
+          }
+        }
+        `
+        , variables: {
+          id
+        }
+      });
   }
 
   getUsers() {
-    this.http.get(this.rootUrl + '/users')
-      .toPromise().then(res => this.users = res as User[]);
+    this.apollo
+      .query<any>({
+        query: gql`
+        {
+          getUsers {
+             id
+             name
+             age
+          }
+        }
+        `
+      }).toPromise().then(({data}) => {
+      this.users = data.getUsers;
+    });
   }
 
   getUsersByName(name: string) {
-    this.http.get(this.rootUrl + '/search?Name=' + name)
-      .toPromise().then(res => this.users = res as User[]);
+    this.apollo
+      .query<any>({
+        query: gql`
+        query($name: String) {
+          getUsersByName(name: $name) {
+             id
+             name
+             age
+          }
+        }
+        `
+        , variables: {
+          name
+        }
+      }).toPromise().then(({data}) => {
+      this.users = data.getUsersByName;
+    });
   }
 
   addUser(user: User): Observable<{}> {
-    return this.http.post(this.rootUrl + '/users', JSON.stringify(user), this.httpOptions);
+    return this.apollo.mutate({
+      mutation: gql`
+      mutation CreateUser($user: InputUser) {
+        addUser(user: $user)
+      }
+      `
+      ,
+      variables: {
+        user
+      }
+    });
   }
 
   editUser(user: User): Observable<{}> {
-    return this.http.put(this.rootUrl + '/users', JSON.stringify(user), this.httpOptions);
+    return this.apollo.mutate({
+      mutation: gql`
+      mutation EditUser($user: InputUser) {
+        editUser(user: $user)
+      }
+      `
+      ,
+      variables: {
+        user
+      }
+    });
   }
 
   deleteUser(id: number): Observable<{}> {
-    return this.http.delete(this.rootUrl + '/user/' + id);
+    return this.apollo.mutate({
+      mutation: gql`
+      mutation CreateUser($id: Int) {
+        deleteUser(id: $id)
+      }
+      `
+      ,
+      variables: {
+        id
+      }
+    });
   }
 }

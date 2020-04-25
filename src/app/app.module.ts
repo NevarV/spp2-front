@@ -19,6 +19,7 @@ import {NotFoundComponent} from './errors/not-found/not-found.component';
 import {HomeLayoutComponent} from './layouts/home-layout/home-layout.component';
 import {LoginLayoutComponent} from './layouts/login-layout/login-layout.component';
 import { UserFormEditComponent } from './content/user-form-edit/user-form-edit.component';
+import { GraphQLModule } from './graphql.module';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { UserFormEditComponent } from './content/user-form-edit/user-form-edit.c
     AppRoutingModule,
     FormsModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    GraphQLModule
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}, AuthGuard],
   bootstrap: [AppComponent]

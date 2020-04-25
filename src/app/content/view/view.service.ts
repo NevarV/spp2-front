@@ -7,14 +7,8 @@ import {Router} from '@angular/router';
 export class ViewService {
 
   tinyComponent = false;
-  resetForm = true;
 
   constructor(private router: Router) {
-  }
-
-  showForm() {
-    this.resetForm = false;
-    this.router.navigate(['/form']);
   }
 
   showUsers() {

@@ -21,7 +21,11 @@ export class UserFormEditComponent implements OnInit {
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       this.userId = params.get('id');
-      this.service.getUserById(this.userId).subscribe(res => this.user = res);
+      this.service.getUserById(this.userId).toPromise().then(({data}) => {
+        console.log(data);
+        // @ts-ignore
+        this.user = data.getUserById;
+      });
     });
   }
 
